@@ -10,33 +10,213 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PortalRouteImport } from './routes/_portal'
+import { Route as PortalAnalyticsRouteImport } from './routes/_portal.analytics'
+import { Route as PortalAuditRouteImport } from './routes/_portal.audit'
+import { Route as PortalDashboardRouteImport } from './routes/_portal.dashboard'
+import { Route as PortalFailuresRouteImport } from './routes/_portal.failures'
+import { Route as PortalFeedbackRouteImport } from './routes/_portal.feedback'
+import { Route as PortalIssuedRouteImport } from './routes/_portal.issued'
+import { Route as PortalNotificationsRouteImport } from './routes/_portal.notifications'
+import { Route as PortalReportsRouteImport } from './routes/_portal.reports'
+import { Route as PortalRequirementsRouteImport } from './routes/_portal.requirements'
+import { Route as PortalReviewRouteImport } from './routes/_portal.review'
+import { Route as PortalSearchRouteImport } from './routes/_portal.search'
+import { Route as PortalSettingsRouteImport } from './routes/_portal.settings'
+import { Route as PortalStockRouteImport } from './routes/_portal.stock'
+import { Route as PortalUsersRouteImport } from './routes/_portal.users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PortalRoute = PortalRouteImport.update({
+  id: '/_portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalAnalyticsRoute = PortalAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalAuditRoute = PortalAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalDashboardRoute = PortalDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalFailuresRoute = PortalFailuresRouteImport.update({
+  id: '/failures',
+  path: '/failures',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalFeedbackRoute = PortalFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalIssuedRoute = PortalIssuedRouteImport.update({
+  id: '/issued',
+  path: '/issued',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalNotificationsRoute = PortalNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalReportsRoute = PortalReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalRequirementsRoute = PortalRequirementsRouteImport.update({
+  id: '/requirements',
+  path: '/requirements',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalReviewRoute = PortalReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSearchRoute = PortalSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSettingsRoute = PortalSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalStockRoute = PortalStockRouteImport.update({
+  id: '/stock',
+  path: '/stock',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalUsersRoute = PortalUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => PortalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof PortalAnalyticsRoute
+  '/audit': typeof PortalAuditRoute
+  '/dashboard': typeof PortalDashboardRoute
+  '/failures': typeof PortalFailuresRoute
+  '/feedback': typeof PortalFeedbackRoute
+  '/issued': typeof PortalIssuedRoute
+  '/notifications': typeof PortalNotificationsRoute
+  '/reports': typeof PortalReportsRoute
+  '/requirements': typeof PortalRequirementsRoute
+  '/review': typeof PortalReviewRoute
+  '/search': typeof PortalSearchRoute
+  '/settings': typeof PortalSettingsRoute
+  '/stock': typeof PortalStockRoute
+  '/users': typeof PortalUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof PortalAnalyticsRoute
+  '/audit': typeof PortalAuditRoute
+  '/dashboard': typeof PortalDashboardRoute
+  '/failures': typeof PortalFailuresRoute
+  '/feedback': typeof PortalFeedbackRoute
+  '/issued': typeof PortalIssuedRoute
+  '/notifications': typeof PortalNotificationsRoute
+  '/reports': typeof PortalReportsRoute
+  '/requirements': typeof PortalRequirementsRoute
+  '/review': typeof PortalReviewRoute
+  '/search': typeof PortalSearchRoute
+  '/settings': typeof PortalSettingsRoute
+  '/stock': typeof PortalStockRoute
+  '/users': typeof PortalUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_portal': typeof PortalRouteWithChildren
+  '/_portal/analytics': typeof PortalAnalyticsRoute
+  '/_portal/audit': typeof PortalAuditRoute
+  '/_portal/dashboard': typeof PortalDashboardRoute
+  '/_portal/failures': typeof PortalFailuresRoute
+  '/_portal/feedback': typeof PortalFeedbackRoute
+  '/_portal/issued': typeof PortalIssuedRoute
+  '/_portal/notifications': typeof PortalNotificationsRoute
+  '/_portal/reports': typeof PortalReportsRoute
+  '/_portal/requirements': typeof PortalRequirementsRoute
+  '/_portal/review': typeof PortalReviewRoute
+  '/_portal/search': typeof PortalSearchRoute
+  '/_portal/settings': typeof PortalSettingsRoute
+  '/_portal/stock': typeof PortalStockRoute
+  '/_portal/users': typeof PortalUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/audit'
+    | '/dashboard'
+    | '/failures'
+    | '/feedback'
+    | '/issued'
+    | '/notifications'
+    | '/reports'
+    | '/requirements'
+    | '/review'
+    | '/search'
+    | '/settings'
+    | '/stock'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analytics'
+    | '/audit'
+    | '/dashboard'
+    | '/failures'
+    | '/feedback'
+    | '/issued'
+    | '/notifications'
+    | '/reports'
+    | '/requirements'
+    | '/review'
+    | '/search'
+    | '/settings'
+    | '/stock'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/_portal'
+    | '/_portal/analytics'
+    | '/_portal/audit'
+    | '/_portal/dashboard'
+    | '/_portal/failures'
+    | '/_portal/feedback'
+    | '/_portal/issued'
+    | '/_portal/notifications'
+    | '/_portal/reports'
+    | '/_portal/requirements'
+    | '/_portal/review'
+    | '/_portal/search'
+    | '/_portal/settings'
+    | '/_portal/stock'
+    | '/_portal/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PortalRoute: typeof PortalRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +228,155 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_portal': {
+      id: '/_portal'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_portal/analytics': {
+      id: '/_portal/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof PortalAnalyticsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/audit': {
+      id: '/_portal/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof PortalAuditRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/dashboard': {
+      id: '/_portal/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof PortalDashboardRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/failures': {
+      id: '/_portal/failures'
+      path: '/failures'
+      fullPath: '/failures'
+      preLoaderRoute: typeof PortalFailuresRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/feedback': {
+      id: '/_portal/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof PortalFeedbackRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/issued': {
+      id: '/_portal/issued'
+      path: '/issued'
+      fullPath: '/issued'
+      preLoaderRoute: typeof PortalIssuedRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/notifications': {
+      id: '/_portal/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof PortalNotificationsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/reports': {
+      id: '/_portal/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof PortalReportsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/requirements': {
+      id: '/_portal/requirements'
+      path: '/requirements'
+      fullPath: '/requirements'
+      preLoaderRoute: typeof PortalRequirementsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/review': {
+      id: '/_portal/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof PortalReviewRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/search': {
+      id: '/_portal/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof PortalSearchRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/settings': {
+      id: '/_portal/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof PortalSettingsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/stock': {
+      id: '/_portal/stock'
+      path: '/stock'
+      fullPath: '/stock'
+      preLoaderRoute: typeof PortalStockRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/users': {
+      id: '/_portal/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof PortalUsersRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
 
+interface PortalRouteChildren {
+  PortalAnalyticsRoute: typeof PortalAnalyticsRoute
+  PortalAuditRoute: typeof PortalAuditRoute
+  PortalDashboardRoute: typeof PortalDashboardRoute
+  PortalFailuresRoute: typeof PortalFailuresRoute
+  PortalFeedbackRoute: typeof PortalFeedbackRoute
+  PortalIssuedRoute: typeof PortalIssuedRoute
+  PortalNotificationsRoute: typeof PortalNotificationsRoute
+  PortalReportsRoute: typeof PortalReportsRoute
+  PortalRequirementsRoute: typeof PortalRequirementsRoute
+  PortalReviewRoute: typeof PortalReviewRoute
+  PortalSearchRoute: typeof PortalSearchRoute
+  PortalSettingsRoute: typeof PortalSettingsRoute
+  PortalStockRoute: typeof PortalStockRoute
+  PortalUsersRoute: typeof PortalUsersRoute
+}
+
+const PortalRouteChildren: PortalRouteChildren = {
+  PortalAnalyticsRoute: PortalAnalyticsRoute,
+  PortalAuditRoute: PortalAuditRoute,
+  PortalDashboardRoute: PortalDashboardRoute,
+  PortalFailuresRoute: PortalFailuresRoute,
+  PortalFeedbackRoute: PortalFeedbackRoute,
+  PortalIssuedRoute: PortalIssuedRoute,
+  PortalNotificationsRoute: PortalNotificationsRoute,
+  PortalReportsRoute: PortalReportsRoute,
+  PortalRequirementsRoute: PortalRequirementsRoute,
+  PortalReviewRoute: PortalReviewRoute,
+  PortalSearchRoute: PortalSearchRoute,
+  PortalSettingsRoute: PortalSettingsRoute,
+  PortalStockRoute: PortalStockRoute,
+  PortalUsersRoute: PortalUsersRoute,
+}
+
+const PortalRouteWithChildren =
+  PortalRoute._addFileChildren(PortalRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PortalRoute: PortalRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
