@@ -7,7 +7,8 @@ export function createRng(seed: number) {
   };
 }
 
-export const pick = <T>(rng: () => number, arr: T[]): T => arr[Math.floor(rng() * arr.length) % arr.length];
+export const pick = <T>(rng: () => number, arr: T[]): T =>
+  arr[Math.floor(rng() * arr.length) % arr.length] as T;
 
 export const intBetween = (rng: () => number, min: number, max: number) =>
   min + Math.floor(rng() * (max - min + 1));
