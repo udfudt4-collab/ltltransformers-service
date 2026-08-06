@@ -161,12 +161,12 @@ export interface Paged<T> {
 }
 
 export interface QueryParams {
-  page?: number;
-  pageSize?: number;
-  search?: string;
-  provinceCode?: string;
-  month?: number;
-  year?: number;
-  status?: SubmissionStatus;
-  rating?: string;
+  page?: number | undefined;
+  pageSize?: number | undefined;
+  search?: string | undefined;
+  provinceCode?: string | undefined;
+  month?: number | undefined;
+  year?: number | undefined;
+  status?: SubmissionStatus | undefined;
+  rating?: string | undefined;
 }
