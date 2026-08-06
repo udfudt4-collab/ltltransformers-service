@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalRouteImport } from './routes/_portal'
+import { Route as PortalDashboardRouteImport } from './routes/_portal.dashboard'
 import { Route as PortalIssuedRouteImport } from './routes/_portal.issued'
 import { Route as PortalStockRouteImport } from './routes/_portal.stock'
 
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 const PortalRoute = PortalRouteImport.update({
   id: '/_portal',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PortalDashboardRoute = PortalDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PortalRoute,
 } as any)
 const PortalIssuedRoute = PortalIssuedRouteImport.update({
   id: '/issued',
@@ -36,11 +42,13 @@ const PortalStockRoute = PortalStockRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof PortalDashboardRoute
   '/issued': typeof PortalIssuedRoute
   '/stock': typeof PortalStockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof PortalDashboardRoute
   '/issued': typeof PortalIssuedRoute
   '/stock': typeof PortalStockRoute
 }
@@ -48,15 +56,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_portal': typeof PortalRouteWithChildren
+  '/_portal/dashboard': typeof PortalDashboardRoute
   '/_portal/issued': typeof PortalIssuedRoute
   '/_portal/stock': typeof PortalStockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/issued' | '/stock'
+  fullPaths: '/' | '/dashboard' | '/issued' | '/stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/issued' | '/stock'
-  id: '__root__' | '/' | '/_portal' | '/_portal/issued' | '/_portal/stock'
+  to: '/' | '/dashboard' | '/issued' | '/stock'
+  id:
+    | '__root__'
+    | '/'
+    | '/_portal'
+    | '/_portal/dashboard'
+    | '/_portal/issued'
+    | '/_portal/stock'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_portal/dashboard': {
+      id: '/_portal/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof PortalDashboardRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/_portal/issued': {
       id: '/_portal/issued'
       path: '/issued'
@@ -98,11 +120,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface PortalRouteChildren {
+  PortalDashboardRoute: typeof PortalDashboardRoute
   PortalIssuedRoute: typeof PortalIssuedRoute
   PortalStockRoute: typeof PortalStockRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
+  PortalDashboardRoute: PortalDashboardRoute,
   PortalIssuedRoute: PortalIssuedRoute,
   PortalStockRoute: PortalStockRoute,
 }
