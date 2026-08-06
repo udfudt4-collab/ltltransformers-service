@@ -12,7 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortalRouteImport } from './routes/_portal'
 import { Route as PortalDashboardRouteImport } from './routes/_portal.dashboard'
+import { Route as PortalFailuresRouteImport } from './routes/_portal.failures'
+import { Route as PortalFeedbackRouteImport } from './routes/_portal.feedback'
 import { Route as PortalIssuedRouteImport } from './routes/_portal.issued'
+import { Route as PortalRequirementsRouteImport } from './routes/_portal.requirements'
 import { Route as PortalStockRouteImport } from './routes/_portal.stock'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,9 +32,24 @@ const PortalDashboardRoute = PortalDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalFailuresRoute = PortalFailuresRouteImport.update({
+  id: '/failures',
+  path: '/failures',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalFeedbackRoute = PortalFeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalIssuedRoute = PortalIssuedRouteImport.update({
   id: '/issued',
   path: '/issued',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalRequirementsRoute = PortalRequirementsRouteImport.update({
+  id: '/requirements',
+  path: '/requirements',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalStockRoute = PortalStockRouteImport.update({
@@ -43,13 +61,19 @@ const PortalStockRoute = PortalStockRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof PortalDashboardRoute
+  '/failures': typeof PortalFailuresRoute
+  '/feedback': typeof PortalFeedbackRoute
   '/issued': typeof PortalIssuedRoute
+  '/requirements': typeof PortalRequirementsRoute
   '/stock': typeof PortalStockRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof PortalDashboardRoute
+  '/failures': typeof PortalFailuresRoute
+  '/feedback': typeof PortalFeedbackRoute
   '/issued': typeof PortalIssuedRoute
+  '/requirements': typeof PortalRequirementsRoute
   '/stock': typeof PortalStockRoute
 }
 export interface FileRoutesById {
@@ -57,20 +81,40 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_portal': typeof PortalRouteWithChildren
   '/_portal/dashboard': typeof PortalDashboardRoute
+  '/_portal/failures': typeof PortalFailuresRoute
+  '/_portal/feedback': typeof PortalFeedbackRoute
   '/_portal/issued': typeof PortalIssuedRoute
+  '/_portal/requirements': typeof PortalRequirementsRoute
   '/_portal/stock': typeof PortalStockRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/issued' | '/stock'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/failures'
+    | '/feedback'
+    | '/issued'
+    | '/requirements'
+    | '/stock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/issued' | '/stock'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/failures'
+    | '/feedback'
+    | '/issued'
+    | '/requirements'
+    | '/stock'
   id:
     | '__root__'
     | '/'
     | '/_portal'
     | '/_portal/dashboard'
+    | '/_portal/failures'
+    | '/_portal/feedback'
     | '/_portal/issued'
+    | '/_portal/requirements'
     | '/_portal/stock'
   fileRoutesById: FileRoutesById
 }
@@ -102,11 +146,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalDashboardRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/_portal/failures': {
+      id: '/_portal/failures'
+      path: '/failures'
+      fullPath: '/failures'
+      preLoaderRoute: typeof PortalFailuresRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/feedback': {
+      id: '/_portal/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof PortalFeedbackRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/_portal/issued': {
       id: '/_portal/issued'
       path: '/issued'
       fullPath: '/issued'
       preLoaderRoute: typeof PortalIssuedRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/requirements': {
+      id: '/_portal/requirements'
+      path: '/requirements'
+      fullPath: '/requirements'
+      preLoaderRoute: typeof PortalRequirementsRouteImport
       parentRoute: typeof PortalRoute
     }
     '/_portal/stock': {
@@ -121,13 +186,19 @@ declare module '@tanstack/react-router' {
 
 interface PortalRouteChildren {
   PortalDashboardRoute: typeof PortalDashboardRoute
+  PortalFailuresRoute: typeof PortalFailuresRoute
+  PortalFeedbackRoute: typeof PortalFeedbackRoute
   PortalIssuedRoute: typeof PortalIssuedRoute
+  PortalRequirementsRoute: typeof PortalRequirementsRoute
   PortalStockRoute: typeof PortalStockRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalDashboardRoute: PortalDashboardRoute,
+  PortalFailuresRoute: PortalFailuresRoute,
+  PortalFeedbackRoute: PortalFeedbackRoute,
   PortalIssuedRoute: PortalIssuedRoute,
+  PortalRequirementsRoute: PortalRequirementsRoute,
   PortalStockRoute: PortalStockRoute,
 }
 
