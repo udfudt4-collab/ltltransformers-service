@@ -22,7 +22,7 @@ function SettingsPage() {
       <dl className="panel grid gap-4 p-6 sm:grid-cols-2">
         <div>
           <dt className="text-xs uppercase text-muted-foreground">Name</dt>
-          <dd className="text-sm font-medium">{user?.name ?? "—"}</dd>
+          <dd className="text-sm font-medium">{user?.fullName ?? "—"}</dd>
         </div>
         <div>
           <dt className="text-xs uppercase text-muted-foreground">Email</dt>
