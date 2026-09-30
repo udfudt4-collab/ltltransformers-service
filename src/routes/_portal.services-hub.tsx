@@ -45,7 +45,7 @@ import { service360Service } from "@/services/service360.service";
 export const Route = createFileRoute("/_portal/services-hub")({
   head: () => ({
     meta: [
-      { title: "Top-Notch Transformer Services | LTL Engineering Portal" },
+      { title: "Transformer Engineering Services | LTL Operations Portal" },
       { name: "description", content: "World-class transformer engineering services, ISO-17025 accredited oil testing, emergency breakdown response, and full-scope refurbishment." },
     ],
   }),
@@ -214,9 +214,9 @@ function ServicesHubPage() {
     <div className="space-y-8 max-w-6xl mx-auto">
       {/* Top Header & Overview */}
       <PageHeader
-        title="Top-Notch Transformer Engineering Services"
+        title="Transformer Engineering & Maintenance Services"
         description="Lanka Transformers Limited (LTL) engineering excellence: certified laboratory diagnostics, emergency rapid-response mobile filtration plants, full-scope rewinding, and smart IoT telemetry retrofits."
-        breadcrumb={["LTL Portal", "Engineering Excellence", "Top-Notch Services"]}
+        breadcrumb={["LTL Portal", "Engineering Excellence", "Transformer Services"]}
       />
 
       {/* Emergency Hotline Banner */}

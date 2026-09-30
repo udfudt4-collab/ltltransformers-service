@@ -50,6 +50,17 @@ export const users: User[] = [
     lastLogin: iso(CURRENT_PERIOD.month, CURRENT_PERIOD.year, 5),
     createdAt: "2024-01-08T04:00:00.000Z",
   },
+  {
+    id: "usr-customer-01",
+    username: "customer.demo",
+    fullName: "Ceylon Tea Estates (Client)",
+    email: "operations@ceylontea.lk",
+    role: "EDL_USER",
+    provinceCode: "CP",
+    active: true,
+    lastLogin: iso(CURRENT_PERIOD.month, CURRENT_PERIOD.year, 2),
+    createdAt: "2025-05-10T04:00:00.000Z",
+  },
   ...PROVINCES.map((p, i) => ({
     id: `usr-${p.code.toLowerCase()}`,
     username: p.code,

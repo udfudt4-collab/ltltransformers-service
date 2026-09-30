@@ -111,7 +111,7 @@ const GROUPS: { label: string; items: NavItem[] }[] = [
     label: "Service360 & Maintenance",
     items: [
       {
-        title: "Top-Notch Services",
+        title: "Transformer Services",
         url: "/services-hub",
         icon: Sparkles,
         roles: ["EDL_USER", "LTL_ADMIN"],
