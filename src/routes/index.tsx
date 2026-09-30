@@ -107,7 +107,7 @@ function LoginPage() {
         <div className="pointer-events-none absolute top-10 left-10 h-72 w-72 rounded-full bg-blue-600/15 blur-3xl" />
         <div className="pointer-events-none absolute bottom-10 right-10 h-80 w-80 rounded-full bg-sky-500/15 blur-3xl" />
 
-        {/* TOP BRANDING BAR: Exact Official Logos & Separators */}
+        {/* TOP BRANDING BAR: Clean LTL Brand Focus */}
         <div className="relative z-10 flex items-center justify-between">
           {/* LTL Transformers Official Logo Group */}
           <div className="flex items-center gap-3">
@@ -132,20 +132,6 @@ function LoginPage() {
             <span className="text-xs font-normal text-slate-300">
               Transformer Operations Portal
             </span>
-          </div>
-
-          {/* TopNotch Services Official Logo Group */}
-          <div className="flex flex-col items-end">
-            <span className="text-[10px] text-slate-400 font-medium mb-1">
-              Technology by
-            </span>
-            <div className="flex items-center rounded-xl bg-white px-3 py-1.5 shadow-md">
-              <img
-                src="/partnerlogo.JPG"
-                alt="TopNotch Services Official Logo"
-                className="h-6 w-auto object-contain"
-              />
-            </div>
           </div>
         </div>
 
@@ -222,9 +208,24 @@ function LoginPage() {
           </div>
         </div>
 
-        {/* BOTTOM MOTTO FOOTER matching reference image */}
-        <div className="relative z-10 pt-2 text-[11px] font-semibold tracking-[0.22em] text-slate-400 uppercase">
-          SAFER &nbsp;&nbsp;|&nbsp;&nbsp; SMARTER &nbsp;&nbsp;|&nbsp;&nbsp; SUSTAINABLE
+        {/* BOTTOM MOTTO & TECH PARTNER FOOTER */}
+        <div className="relative z-10 pt-2 flex items-center justify-between border-t border-white/10">
+          <div className="text-[11px] font-semibold tracking-[0.22em] text-slate-400 uppercase">
+            SAFER &nbsp;&nbsp;|&nbsp;&nbsp; SMARTER &nbsp;&nbsp;|&nbsp;&nbsp; SUSTAINABLE
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 font-medium">
+              Technology by
+            </span>
+            <div className="flex items-center rounded-lg bg-white px-2.5 py-1 shadow-sm">
+              <img
+                src="/partnerlogo.JPG"
+                alt="TopNotch Services Official Logo"
+                className="h-5 w-auto object-contain"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
