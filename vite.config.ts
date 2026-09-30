@@ -9,14 +9,17 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  server: {
-    host: "0.0.0.0",
-    allowedHosts: true,
-  },
-  preview: {
-    host: "0.0.0.0",
-    port: 8080,
-    allowedHosts: true,
+  vite: {
+    server: {
+      host: "0.0.0.0",
+      allowedHosts: true,
+    },
+    preview: {
+      host: "0.0.0.0",
+      port: 8080,
+      allowedHosts: true,
+    },
   },
 });
+
 
