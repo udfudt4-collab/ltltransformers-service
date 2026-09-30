@@ -1,0 +1,12 @@
+node_modules
+Merge
+.git
+.github
+.agents
+.vscode
+dist
+.output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store

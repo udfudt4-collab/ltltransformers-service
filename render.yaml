@@ -1,0 +1,23 @@
+# Render Blueprint Specification
+# See https://render.com/docs/blueprint-spec for details
+
+services:
+  # Option A: Web Service (Runs via our Dockerfile on Free Tier)
+  - type: web
+    name: ltl-transformer-portal
+    env: docker
+    plan: free
+    region: singapore # Singapore region for lowest latency
+    healthCheckPath: /
+    autoDeploy: true
+
+  # Option B: Static Site (Fast global CDN)
+  # - type: web
+    # name: ltl-transformer-portal-static
+    # env: static
+    # buildCommand: npm run build
+    # staticPublishPath: dist
+    # routes:
+    #   - type: rewrite
+    #     source: /*
+    #     destination: /index.html

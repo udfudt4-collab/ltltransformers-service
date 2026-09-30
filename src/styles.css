@@ -169,8 +169,48 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-panel);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+@utility glass-panel {
+  background-color: color-mix(in oklch, var(--color-card) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in oklch, var(--color-border) 80%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 }
 
 @utility numeric {
   font-variant-numeric: tabular-nums;
 }
+
+/* Energy Grid Background Pattern */
+.bg-energy-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(56, 189, 248, 0.12) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+.dark .bg-energy-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(56, 189, 248, 0.18) 1px, transparent 0);
+}
+
+/* Subtle modern scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--color-muted-foreground) 25%, transparent);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--color-muted-foreground) 45%, transparent);
+}
+

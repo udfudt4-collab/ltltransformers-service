@@ -14,17 +14,24 @@ import { Route as PortalRouteImport } from './routes/_portal'
 import { Route as PortalAnalyticsRouteImport } from './routes/_portal.analytics'
 import { Route as PortalAuditRouteImport } from './routes/_portal.audit'
 import { Route as PortalDashboardRouteImport } from './routes/_portal.dashboard'
+import { Route as PortalDeveloperRouteImport } from './routes/_portal.developer'
 import { Route as PortalFailuresRouteImport } from './routes/_portal.failures'
 import { Route as PortalFeedbackRouteImport } from './routes/_portal.feedback'
 import { Route as PortalIssuedRouteImport } from './routes/_portal.issued'
 import { Route as PortalNotificationsRouteImport } from './routes/_portal.notifications'
+import { Route as PortalRegisterWarrantyRouteImport } from './routes/_portal.register-warranty'
 import { Route as PortalReportsRouteImport } from './routes/_portal.reports'
 import { Route as PortalRequirementsRouteImport } from './routes/_portal.requirements'
 import { Route as PortalReviewRouteImport } from './routes/_portal.review'
 import { Route as PortalSearchRouteImport } from './routes/_portal.search'
+import { Route as PortalServiceRequestsRouteImport } from './routes/_portal.service-requests'
+import { Route as PortalServicesHubRouteImport } from './routes/_portal.services-hub'
 import { Route as PortalSettingsRouteImport } from './routes/_portal.settings'
+import { Route as PortalSiteOperationsRouteImport } from './routes/_portal.site-operations'
 import { Route as PortalStockRouteImport } from './routes/_portal.stock'
 import { Route as PortalUsersRouteImport } from './routes/_portal.users'
+import { Route as PortalServiceDetailIdRouteImport } from './routes/_portal.service-detail.$id'
+import { Route as PortalTransformerIdRouteImport } from './routes/_portal.transformer.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -50,6 +57,11 @@ const PortalDashboardRoute = PortalDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalDeveloperRoute = PortalDeveloperRouteImport.update({
+  id: '/developer',
+  path: '/developer',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalFailuresRoute = PortalFailuresRouteImport.update({
   id: '/failures',
   path: '/failures',
@@ -68,6 +80,11 @@ const PortalIssuedRoute = PortalIssuedRouteImport.update({
 const PortalNotificationsRoute = PortalNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalRegisterWarrantyRoute = PortalRegisterWarrantyRouteImport.update({
+  id: '/register-warranty',
+  path: '/register-warranty',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalReportsRoute = PortalReportsRouteImport.update({
@@ -90,9 +107,24 @@ const PortalSearchRoute = PortalSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalServiceRequestsRoute = PortalServiceRequestsRouteImport.update({
+  id: '/service-requests',
+  path: '/service-requests',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalServicesHubRoute = PortalServicesHubRouteImport.update({
+  id: '/services-hub',
+  path: '/services-hub',
+  getParentRoute: () => PortalRoute,
+} as any)
 const PortalSettingsRoute = PortalSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalSiteOperationsRoute = PortalSiteOperationsRouteImport.update({
+  id: '/site-operations',
+  path: '/site-operations',
   getParentRoute: () => PortalRoute,
 } as any)
 const PortalStockRoute = PortalStockRouteImport.update({
@@ -105,40 +137,64 @@ const PortalUsersRoute = PortalUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => PortalRoute,
 } as any)
+const PortalServiceDetailIdRoute = PortalServiceDetailIdRouteImport.update({
+  id: '/service-detail/$id',
+  path: '/service-detail/$id',
+  getParentRoute: () => PortalRoute,
+} as any)
+const PortalTransformerIdRoute = PortalTransformerIdRouteImport.update({
+  id: '/transformer/$id',
+  path: '/transformer/$id',
+  getParentRoute: () => PortalRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof PortalAnalyticsRoute
   '/audit': typeof PortalAuditRoute
   '/dashboard': typeof PortalDashboardRoute
+  '/developer': typeof PortalDeveloperRoute
   '/failures': typeof PortalFailuresRoute
   '/feedback': typeof PortalFeedbackRoute
   '/issued': typeof PortalIssuedRoute
   '/notifications': typeof PortalNotificationsRoute
+  '/register-warranty': typeof PortalRegisterWarrantyRoute
   '/reports': typeof PortalReportsRoute
   '/requirements': typeof PortalRequirementsRoute
   '/review': typeof PortalReviewRoute
   '/search': typeof PortalSearchRoute
+  '/service-requests': typeof PortalServiceRequestsRoute
+  '/services-hub': typeof PortalServicesHubRoute
   '/settings': typeof PortalSettingsRoute
+  '/site-operations': typeof PortalSiteOperationsRoute
   '/stock': typeof PortalStockRoute
   '/users': typeof PortalUsersRoute
+  '/service-detail/$id': typeof PortalServiceDetailIdRoute
+  '/transformer/$id': typeof PortalTransformerIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof PortalAnalyticsRoute
   '/audit': typeof PortalAuditRoute
   '/dashboard': typeof PortalDashboardRoute
+  '/developer': typeof PortalDeveloperRoute
   '/failures': typeof PortalFailuresRoute
   '/feedback': typeof PortalFeedbackRoute
   '/issued': typeof PortalIssuedRoute
   '/notifications': typeof PortalNotificationsRoute
+  '/register-warranty': typeof PortalRegisterWarrantyRoute
   '/reports': typeof PortalReportsRoute
   '/requirements': typeof PortalRequirementsRoute
   '/review': typeof PortalReviewRoute
   '/search': typeof PortalSearchRoute
+  '/service-requests': typeof PortalServiceRequestsRoute
+  '/services-hub': typeof PortalServicesHubRoute
   '/settings': typeof PortalSettingsRoute
+  '/site-operations': typeof PortalSiteOperationsRoute
   '/stock': typeof PortalStockRoute
   '/users': typeof PortalUsersRoute
+  '/service-detail/$id': typeof PortalServiceDetailIdRoute
+  '/transformer/$id': typeof PortalTransformerIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -147,17 +203,24 @@ export interface FileRoutesById {
   '/_portal/analytics': typeof PortalAnalyticsRoute
   '/_portal/audit': typeof PortalAuditRoute
   '/_portal/dashboard': typeof PortalDashboardRoute
+  '/_portal/developer': typeof PortalDeveloperRoute
   '/_portal/failures': typeof PortalFailuresRoute
   '/_portal/feedback': typeof PortalFeedbackRoute
   '/_portal/issued': typeof PortalIssuedRoute
   '/_portal/notifications': typeof PortalNotificationsRoute
+  '/_portal/register-warranty': typeof PortalRegisterWarrantyRoute
   '/_portal/reports': typeof PortalReportsRoute
   '/_portal/requirements': typeof PortalRequirementsRoute
   '/_portal/review': typeof PortalReviewRoute
   '/_portal/search': typeof PortalSearchRoute
+  '/_portal/service-requests': typeof PortalServiceRequestsRoute
+  '/_portal/services-hub': typeof PortalServicesHubRoute
   '/_portal/settings': typeof PortalSettingsRoute
+  '/_portal/site-operations': typeof PortalSiteOperationsRoute
   '/_portal/stock': typeof PortalStockRoute
   '/_portal/users': typeof PortalUsersRoute
+  '/_portal/service-detail/$id': typeof PortalServiceDetailIdRoute
+  '/_portal/transformer/$id': typeof PortalTransformerIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -166,34 +229,48 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/audit'
     | '/dashboard'
+    | '/developer'
     | '/failures'
     | '/feedback'
     | '/issued'
     | '/notifications'
+    | '/register-warranty'
     | '/reports'
     | '/requirements'
     | '/review'
     | '/search'
+    | '/service-requests'
+    | '/services-hub'
     | '/settings'
+    | '/site-operations'
     | '/stock'
     | '/users'
+    | '/service-detail/$id'
+    | '/transformer/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/analytics'
     | '/audit'
     | '/dashboard'
+    | '/developer'
     | '/failures'
     | '/feedback'
     | '/issued'
     | '/notifications'
+    | '/register-warranty'
     | '/reports'
     | '/requirements'
     | '/review'
     | '/search'
+    | '/service-requests'
+    | '/services-hub'
     | '/settings'
+    | '/site-operations'
     | '/stock'
     | '/users'
+    | '/service-detail/$id'
+    | '/transformer/$id'
   id:
     | '__root__'
     | '/'
@@ -201,17 +278,24 @@ export interface FileRouteTypes {
     | '/_portal/analytics'
     | '/_portal/audit'
     | '/_portal/dashboard'
+    | '/_portal/developer'
     | '/_portal/failures'
     | '/_portal/feedback'
     | '/_portal/issued'
     | '/_portal/notifications'
+    | '/_portal/register-warranty'
     | '/_portal/reports'
     | '/_portal/requirements'
     | '/_portal/review'
     | '/_portal/search'
+    | '/_portal/service-requests'
+    | '/_portal/services-hub'
     | '/_portal/settings'
+    | '/_portal/site-operations'
     | '/_portal/stock'
     | '/_portal/users'
+    | '/_portal/service-detail/$id'
+    | '/_portal/transformer/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -256,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalDashboardRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/_portal/developer': {
+      id: '/_portal/developer'
+      path: '/developer'
+      fullPath: '/developer'
+      preLoaderRoute: typeof PortalDeveloperRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/_portal/failures': {
       id: '/_portal/failures'
       path: '/failures'
@@ -282,6 +373,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof PortalNotificationsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/register-warranty': {
+      id: '/_portal/register-warranty'
+      path: '/register-warranty'
+      fullPath: '/register-warranty'
+      preLoaderRoute: typeof PortalRegisterWarrantyRouteImport
       parentRoute: typeof PortalRoute
     }
     '/_portal/reports': {
@@ -312,11 +410,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalSearchRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/_portal/service-requests': {
+      id: '/_portal/service-requests'
+      path: '/service-requests'
+      fullPath: '/service-requests'
+      preLoaderRoute: typeof PortalServiceRequestsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/services-hub': {
+      id: '/_portal/services-hub'
+      path: '/services-hub'
+      fullPath: '/services-hub'
+      preLoaderRoute: typeof PortalServicesHubRouteImport
+      parentRoute: typeof PortalRoute
+    }
     '/_portal/settings': {
       id: '/_portal/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof PortalSettingsRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/site-operations': {
+      id: '/_portal/site-operations'
+      path: '/site-operations'
+      fullPath: '/site-operations'
+      preLoaderRoute: typeof PortalSiteOperationsRouteImport
       parentRoute: typeof PortalRoute
     }
     '/_portal/stock': {
@@ -333,6 +452,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortalUsersRouteImport
       parentRoute: typeof PortalRoute
     }
+    '/_portal/service-detail/$id': {
+      id: '/_portal/service-detail/$id'
+      path: '/service-detail/$id'
+      fullPath: '/service-detail/$id'
+      preLoaderRoute: typeof PortalServiceDetailIdRouteImport
+      parentRoute: typeof PortalRoute
+    }
+    '/_portal/transformer/$id': {
+      id: '/_portal/transformer/$id'
+      path: '/transformer/$id'
+      fullPath: '/transformer/$id'
+      preLoaderRoute: typeof PortalTransformerIdRouteImport
+      parentRoute: typeof PortalRoute
+    }
   }
 }
 
@@ -340,34 +473,48 @@ interface PortalRouteChildren {
   PortalAnalyticsRoute: typeof PortalAnalyticsRoute
   PortalAuditRoute: typeof PortalAuditRoute
   PortalDashboardRoute: typeof PortalDashboardRoute
+  PortalDeveloperRoute: typeof PortalDeveloperRoute
   PortalFailuresRoute: typeof PortalFailuresRoute
   PortalFeedbackRoute: typeof PortalFeedbackRoute
   PortalIssuedRoute: typeof PortalIssuedRoute
   PortalNotificationsRoute: typeof PortalNotificationsRoute
+  PortalRegisterWarrantyRoute: typeof PortalRegisterWarrantyRoute
   PortalReportsRoute: typeof PortalReportsRoute
   PortalRequirementsRoute: typeof PortalRequirementsRoute
   PortalReviewRoute: typeof PortalReviewRoute
   PortalSearchRoute: typeof PortalSearchRoute
+  PortalServiceRequestsRoute: typeof PortalServiceRequestsRoute
+  PortalServicesHubRoute: typeof PortalServicesHubRoute
   PortalSettingsRoute: typeof PortalSettingsRoute
+  PortalSiteOperationsRoute: typeof PortalSiteOperationsRoute
   PortalStockRoute: typeof PortalStockRoute
   PortalUsersRoute: typeof PortalUsersRoute
+  PortalServiceDetailIdRoute: typeof PortalServiceDetailIdRoute
+  PortalTransformerIdRoute: typeof PortalTransformerIdRoute
 }
 
 const PortalRouteChildren: PortalRouteChildren = {
   PortalAnalyticsRoute: PortalAnalyticsRoute,
   PortalAuditRoute: PortalAuditRoute,
   PortalDashboardRoute: PortalDashboardRoute,
+  PortalDeveloperRoute: PortalDeveloperRoute,
   PortalFailuresRoute: PortalFailuresRoute,
   PortalFeedbackRoute: PortalFeedbackRoute,
   PortalIssuedRoute: PortalIssuedRoute,
   PortalNotificationsRoute: PortalNotificationsRoute,
+  PortalRegisterWarrantyRoute: PortalRegisterWarrantyRoute,
   PortalReportsRoute: PortalReportsRoute,
   PortalRequirementsRoute: PortalRequirementsRoute,
   PortalReviewRoute: PortalReviewRoute,
   PortalSearchRoute: PortalSearchRoute,
+  PortalServiceRequestsRoute: PortalServiceRequestsRoute,
+  PortalServicesHubRoute: PortalServicesHubRoute,
   PortalSettingsRoute: PortalSettingsRoute,
+  PortalSiteOperationsRoute: PortalSiteOperationsRoute,
   PortalStockRoute: PortalStockRoute,
   PortalUsersRoute: PortalUsersRoute,
+  PortalServiceDetailIdRoute: PortalServiceDetailIdRoute,
+  PortalTransformerIdRoute: PortalTransformerIdRoute,
 }
 
 const PortalRouteWithChildren =
@@ -380,3 +527,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

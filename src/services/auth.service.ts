@@ -32,6 +32,29 @@ export const authService = {
       return session;
     }),
 
+  loginWithPhone: (phone: string, otp: string, countryCode = "+94"): Promise<AuthSession> =>
+    request(() => {
+      if (otp !== "123456" && otp.length !== 6) {
+        throw new ApiError("Invalid 6-digit OTP. Please enter 123456 for demo verification.", 401);
+      }
+      const user: User = users[1] || {
+        id: "usr-field-01",
+        username: `field.${phone.slice(-4)}`,
+        name: `Field Officer (${countryCode} ${phone})`,
+        email: `engineer.${phone.slice(-4)}@ceb.lk`,
+        role: "EDL_USER",
+        provinceCode: "WP",
+        active: true,
+        lastLogin: new Date().toISOString(),
+      };
+      user.lastLogin = new Date().toISOString();
+      const session = makeSession(user);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+      localStorage.setItem("userMobile", `${countryCode}${phone}`);
+      localStorage.setItem("userRole", "customer");
+      return session;
+    }),
+
   logout: (): Promise<void> =>
     request(() => {
       localStorage.removeItem(STORAGE_KEY);

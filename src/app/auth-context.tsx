@@ -10,6 +10,7 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   hydrated: boolean;
   login: (username: string, password: string) => Promise<AuthSession>;
+  loginWithPhone: (phone: string, otp: string, countryCode?: string) => Promise<AuthSession>;
   logout: () => Promise<void>;
 }
 
@@ -38,6 +39,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return next;
   }, []);
 
+  const loginWithPhone = useCallback(async (phone: string, otp: string, countryCode?: string) => {
+    const next = await authService.loginWithPhone(phone, otp, countryCode);
+    setSession(next);
+    void auditService.record({
+      user: next.user.username,
+      provinceCode: next.user.provinceCode,
+      action: "LOGIN_OTP",
+      entity: "Session",
+      ip: "10.20.4.18",
+      browser: typeof navigator === "undefined" ? "Unknown" : navigator.userAgent.slice(0, 40),
+    });
+    return next;
+  }, []);
+
   const logout = useCallback(async () => {
     await authService.logout();
     setSession(null);
@@ -51,9 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: Boolean(session),
       hydrated,
       login,
+      loginWithPhone,
       logout,
     }),
-    [session, hydrated, login, logout],
+    [session, hydrated, login, loginWithPhone, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

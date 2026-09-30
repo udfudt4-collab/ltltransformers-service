@@ -915,18 +915,10 @@ Reusable component library
 Clean project architecture
 
 The application must be designed so that, after frontend approval, the backend APIs and database can be integrated without changing the UI architecture.
+## About Lanka Transformers Limited (LTL) Portal
 
-This project was built with [Lovable](https://lovable.dev).
+The LTL Transformer Management Portal is an enterprise-grade web application for consolidating, reviewing, and analyzing monthly transformer operations across EDL provincial offices.
 
-**Live app**: https://grid-guardian-portal.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/9825ea9d-953e-4030-9e96-c4e90511d0fa).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 

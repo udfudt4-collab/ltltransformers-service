@@ -170,3 +170,90 @@ export interface QueryParams {
   status?: SubmissionStatus | undefined;
   rating?: string | undefined;
 }
+
+/* ----------------------------- Service360 ------------------------------ */
+
+export type CoverageType = "warranty" | "ama" | "none";
+export type CoverageStatus = "active" | "expiring" | "expired";
+
+export interface EquipmentAsset {
+  id: string;
+  name: string;
+  rating: string;
+  model: string;
+  serialNumber: string;
+  description: string;
+  provinceCode: string;
+  substation: string;
+  purchaseDate: string;
+  installationDate: string;
+  coverageType: CoverageType;
+  coverageStatus: CoverageStatus;
+  coverageExpiry: string;
+  invoiceNumber: string;
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+}
+
+export type TicketStatus =
+  | "open"
+  | "acknowledged"
+  | "in_progress"
+  | "awaiting_customer"
+  | "resolved"
+  | "closed";
+
+export interface ServiceTicketMessage {
+  id: string;
+  sender: "customer" | "technician" | "ltl";
+  senderName: string;
+  message: string;
+  timestamp: string;
+  type: "message" | "status_update";
+}
+
+export interface ServiceRequestTicket {
+  id: string;
+  ticketId: string;
+  equipmentId: string;
+  equipmentName: string;
+  model: string;
+  serialNumber: string;
+  category: string;
+  status: TicketStatus;
+  description: string;
+  provinceCode: string;
+  substation: string;
+  createdDate: string;
+  scheduledDate?: string | undefined;
+  completedDate?: string | undefined;
+  technicianAssigned?: string | undefined;
+  technicianPhone?: string | undefined;
+  resolution?: string | undefined;
+  rating?: number | undefined;
+  feedback?: string | undefined;
+  imageUrl?: string | undefined;
+  messages: ServiceTicketMessage[];
+}
+
+export interface AuthorizedPerson {
+  id: number;
+  name: string;
+  email: string;
+  mobile: string;
+  designation?: string;
+}
+
+export interface SiteOperationLocation {
+  provinceCode: string;
+  substation: string;
+  address: string;
+  city: string;
+  state: string;
+  pincode: string;
+  latitude: string;
+  longitude: string;
+  authorizedPersons: AuthorizedPerson[];
+}
+
