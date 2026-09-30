@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------
-# Multi-stage Dockerfile for LTL Transformer Management Portal (TanStack Start / Vite)
+# Multi-stage Dockerfile for LTL Transformer Management Portal (TanStack Start / Nitro)
 # -------------------------------------------------------------------
 
 # Stage 1: Build dependencies & production assets
@@ -30,16 +30,12 @@ ENV NODE_ENV=production
 ENV PORT=8080
 ENV HOST=0.0.0.0
 
-# Copy necessary production artifacts from builder
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/public ./public
+# Copy compiled production output (server + static assets)
+COPY --from=builder /app/.output ./.output
 
-# Copy build outputs (dist / .output / server depending on bundler)
-COPY --from=builder /app ./
-
-# Expose standard Fly.io web port
+# Expose standard web port
 EXPOSE 8080
 
-# Start production server
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "8080"]
+# Start compiled high-performance Node server
+CMD ["node", ".output/server/index.mjs"]
+

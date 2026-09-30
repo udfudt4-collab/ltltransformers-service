@@ -9,6 +9,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  nitro: {
+    preset: "node-server",
+  },
   vite: {
     server: {
       host: "0.0.0.0",
@@ -21,5 +24,6 @@ export default defineConfig({
     },
   },
 });
+
 
 
