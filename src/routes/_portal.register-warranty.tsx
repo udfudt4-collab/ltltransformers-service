@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_portal/register-warranty")({
   component: RegisterWarrantyPage,
 });
 
-export function RegisterWarrantyPage() {
+function RegisterWarrantyPage() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({

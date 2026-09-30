@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_portal/service-detail/$id")({
   component: ServiceTicketDetailPage,
 });
 
-export function ServiceTicketDetailPage() {
+function ServiceTicketDetailPage() {
   const { id } = useParams({ from: "/_portal/service-detail/$id" });
   const navigate = useNavigate();
   const feedbackInputId = useId();

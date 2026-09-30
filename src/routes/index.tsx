@@ -4,27 +4,21 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-  Activity,
   ArrowRight,
   CheckCircle2,
   Eye,
   EyeOff,
-  Layers,
-  Loader2,
-  LockKeyhole,
-  Shield,
-  ShieldCheck,
-  Sparkles,
-  User,
-  Zap,
-  Smartphone,
   KeyRound,
+  Loader2,
+  Lock,
+  Smartphone,
+  Sparkles,
+  User as UserIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -35,22 +29,15 @@ import {
 import { toast } from "sonner";
 import { useAuth } from "@/app/auth-context";
 import { authService } from "@/services/auth.service";
-import { PROVINCES } from "@/mock/provinces";
-import { LtlLogo } from "@/components/common/ltl-logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Sign In | LTL Transformer Management Portal" },
+      { title: "Sign In | LTL Transformers Portal" },
       {
         name: "description",
         content:
-          "Secure portal for EDL provincial offices to submit transformer data and for LTL to review, analyse, and report.",
-      },
-      { property: "og:title", content: "Sign In | LTL Transformer Management Portal" },
-      {
-        property: "og:description",
-        content: "Secure access for EDL provincial offices and LTL administrators.",
+          "Secure portal for EDL provincial offices and LTL engineering specialists to manage transformer operations.",
       },
     ],
   }),
@@ -59,17 +46,15 @@ export const Route = createFileRoute("/")({
 
 const schema = z.object({
   username: z.string().trim().min(3, "Enter your account username").max(64),
-  password: z.string().min(6, "Password must be at least 6 characters").max(128),
+  password: z.string().min(4, "Password must be at least 4 characters").max(128),
 });
 
 type FormValues = z.infer<typeof schema>;
 
-const DEMO_PRESETS = [
-  { label: "LTL Admin", username: "ltl.admin", role: "Administrator", badge: "Super Admin" },
-  { label: "EDL-NCP", username: "EDL-NCP", role: "North Central", badge: "Provincial" },
-  { label: "EDL-NP", username: "EDL-NP", role: "Northern", badge: "Provincial" },
-  { label: "EDL-WPS-1", username: "EDL-WPS-1", role: "Western South", badge: "Provincial" },
-  { label: "EDL-CP-1", username: "EDL-CP-1", role: "Central Hub", badge: "Provincial" },
+const DEMO_TEST_ACCOUNTS = [
+  { label: "LTL Admin", username: "ltl.admin", role: "Super Admin", password: "Password@123" },
+  { label: "EDL-NCP", username: "EDL-NCP", role: "North Central", password: "Password@123" },
+  { label: "EDL-NP", username: "EDL-NP", role: "Northern Office", password: "Password@123" },
 ];
 
 const COUNTRIES = [
@@ -85,10 +70,10 @@ function LoginPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [activePreset, setActivePreset] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"credentials" | "otp">("credentials");
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
   // OTP State
-  const [authMode, setAuthMode] = useState<"credentials" | "otp">("credentials");
   const [selectedCountry, setSelectedCountry] = useState("LK");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
@@ -105,7 +90,7 @@ function LoginPage() {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { username: "", password: "" },
+    defaultValues: { username: "ltl.admin", password: "Password@123" },
   });
 
   const onSubmit = async (values: FormValues) => {
@@ -118,10 +103,13 @@ function LoginPage() {
     }
   };
 
-  const quickFill = (username: string) => {
-    setActivePreset(username);
+  const handleQuickFill = (username: string, pass: string) => {
+    setSelectedPreset(username);
     form.setValue("username", username, { shouldValidate: true });
-    form.setValue("password", authService.demoPassword, { shouldValidate: true });
+    form.setValue("password", pass, { shouldValidate: true });
+    toast.success(`Selected ${username}`, {
+      description: `Pre-filled test credentials for instant evaluation.`,
+    });
   };
 
   const handleSendOtp = async (e: React.FormEvent) => {
@@ -129,7 +117,7 @@ function LoginPage() {
     setError(null);
     const cleanPhone = phone.replace(/\D/g, "");
     if (cleanPhone.length < country.phoneLength) {
-      setError(`Please enter a valid ${country.phoneLength}-digit phone number for ${country.name}.`);
+      setError(`Please enter a valid ${country.phoneLength}-digit phone number.`);
       return;
     }
     setOtpLoading(true);
@@ -138,7 +126,7 @@ function LoginPage() {
     setOtpSent(true);
     setOtp("123456");
     toast.success("Verification Code Sent!", {
-      description: `Sent to ${country.isd} ${cleanPhone}. Demo verification OTP is 123456.`,
+      description: `Sent to ${country.isd} ${cleanPhone}. Demo test OTP is 123456.`,
     });
   };
 
@@ -158,373 +146,383 @@ function LoginPage() {
   };
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[1.15fr_1fr]">
-      {/* Left Showcase Hero Panel */}
-      <section className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-950 via-[#0a152e] to-[#021326] p-12 text-slate-100 lg:flex">
-        {/* Background Ambient Glow & Grid */}
-        <div className="pointer-events-none absolute inset-0 bg-energy-grid opacity-30" />
-        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-sky-500/15 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl" />
-        <div className="pointer-events-none absolute top-1/2 left-1/3 h-64 w-64 -translate-y-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+    <div className="grid min-h-screen lg:grid-cols-[1.18fr_1fr] bg-[#f8fafc]">
+      {/* ---------------------------------------------------- */}
+      {/* LEFT SHOWCASE PANEL: Blue Transformer Tech Blueprint */}
+      {/* ---------------------------------------------------- */}
+      <section className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-[#061838] via-[#04122b] to-[#020b18] p-10 lg:p-14 text-white lg:flex">
+        {/* Ambient Grid Lines & Glow */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "radial-gradient(#38bdf8 1px, transparent 1px), linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="pointer-events-none absolute -top-20 -left-20 h-96 w-96 rounded-full bg-blue-500/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-sky-500/20 blur-3xl" />
 
-        {/* Top Branding */}
-        <div className="relative z-10 flex items-center justify-between">
-          <LtlLogo
-            size={42}
-            showText={true}
-            showPartner={true}
-            textClassName="text-white text-lg font-bold"
-            subtitleClassName="text-sky-200/70 text-xs"
-          />
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-300 backdrop-blur-sm">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            Grid Telemetry Active
+        {/* Top Branding Bar */}
+        <div className="relative z-10 flex items-center gap-4">
+          {/* Real LTL Transformers Logo */}
+          <div className="flex items-center gap-2.5 rounded-xl bg-white px-3.5 py-2 shadow-lg">
+            <img
+              src="/ltllogo.jpg"
+              alt="LTL Transformers Logo"
+              className="h-8 w-auto object-contain"
+            />
+            <div className="flex flex-col text-left">
+              <span className="text-xs font-black tracking-tight text-[#071f43] leading-none">
+                LTL
+              </span>
+              <span className="text-[10px] font-extrabold tracking-wider text-[#071f43] leading-none mt-0.5">
+                TRANSFORMERS
+              </span>
+            </div>
+          </div>
+
+          <div className="h-6 w-px bg-white/20" />
+
+          {/* Powered by Topnotch Services Badge */}
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase tracking-wider text-slate-300/80 font-medium">
+              Powered by
+            </span>
+            <div className="mt-0.5 flex items-center gap-1.5 rounded-lg bg-white px-2.5 py-1 shadow-sm">
+              <span className="h-3 w-1 bg-red-600 rounded-xs" />
+              <span className="text-xs font-black tracking-tight text-red-600 leading-none">
+                TOPNOTCH
+              </span>
+              <span className="text-[10px] font-semibold text-slate-600 leading-none">
+                Services
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Central Core Message & Pillars */}
-        <div className="relative z-10 my-auto max-w-xl space-y-8 py-10">
+        {/* Central Core Hero Headline & Visual */}
+        <div className="relative z-10 my-auto py-6 max-w-xl">
           <div className="space-y-3">
-            <span className="inline-flex items-center gap-1 rounded-md bg-blue-500/20 px-2.5 py-1 text-xs font-semibold tracking-wide text-sky-300 uppercase">
-              National Transformer Infrastructure
-            </span>
-            <h1 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-              Precision transformer management across every province.
+            <div className="text-xs font-bold uppercase tracking-widest text-[#38bdf8]">
+              TRANSFORMER OPERATIONS PORTAL
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold leading-[1.12] tracking-tight text-white">
+              Manage your
+              <br />
+              transformer network.
             </h1>
-            <p className="text-base leading-relaxed text-slate-300/80">
-              Consolidating monthly inventory, distribution tracking, failure diagnostics, and
-              quarterly forecasting between provincial EDL offices and LTL engineering specialists.
+            <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed">
+              Inventory, service and field operations in one place.
             </p>
           </div>
 
-          {/* Key Feature Tiles */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md transition-all hover:bg-white/10">
-              <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-lg bg-sky-500/20 text-sky-400">
-                  <Zap className="h-4.5 w-4.5" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-white">Failure Analytics</h3>
-                  <p className="text-xs text-slate-400">Root-cause & tripping telemetry</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md transition-all hover:bg-white/10">
-              <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-500/20 text-emerald-400">
-                  <ShieldCheck className="h-4.5 w-4.5" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-white">Audit Verification</h3>
-                  <p className="text-xs text-slate-400">6-stage approval workflow</p>
-                </div>
-              </div>
-            </div>
+          {/* Transformer Blueprint Graphic */}
+          <div className="relative mt-6 overflow-hidden rounded-2xl border border-sky-500/20 bg-[#020b18]/60 p-2 shadow-2xl backdrop-blur-sm group">
+            <img
+              src="/transformer-hero.jpg"
+              alt="Substation Transformer Technical Schematic"
+              className="h-auto w-full rounded-xl object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+            />
+            <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-[#04122b]/80 via-transparent to-transparent" />
           </div>
-
-          {/* Quick Metrics Bar */}
-          <dl className="grid grid-cols-3 gap-4 rounded-xl border border-white/10 bg-slate-900/60 p-4 backdrop-blur-sm">
-            <div>
-              <dt className="text-xs font-medium text-slate-400">EDL Provinces</dt>
-              <dd className="mt-1 text-2xl font-bold text-white numeric">{PROVINCES.length}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-slate-400">Core Modules</dt>
-              <dd className="mt-1 text-2xl font-bold text-sky-400 numeric">5</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-medium text-slate-400">System Accuracy</dt>
-              <dd className="mt-1 text-2xl font-bold text-emerald-400 numeric">99.9%</dd>
-            </div>
-          </dl>
         </div>
 
-        {/* Bottom Status */}
-        <div className="relative z-10 flex items-center justify-between text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} Lanka Transformers Limited. All rights reserved.</p>
-          <p className="flex items-center gap-1.5">
-            <LockKeyhole className="h-3.5 w-3.5 text-sky-400" />
-            ISO 27001 Certified Security
-          </p>
+        {/* Bottom Footer Details */}
+        <div className="relative z-10 pt-4">
+          <div className="h-1 w-9 bg-[#38bdf8] rounded-full mb-2" />
+          <div className="text-sm font-semibold text-white">LTL Transformers</div>
+          <div className="text-xs text-slate-400">Enterprise Service Portal</div>
         </div>
       </section>
 
-      {/* Right Sign-in Form Panel */}
-      <section className="relative flex items-center justify-center bg-background px-6 py-12 sm:px-12">
-        <div className="w-full max-w-md space-y-6">
-          {/* Mobile Header */}
-          <div className="flex items-center gap-3 lg:hidden">
-            <LtlLogo size={32} showText={true} />
-          </div>
-
-          <div>
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-              <Shield className="h-3 w-3" />
-              Authorized Access
-            </span>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Sign in to Portal
+      {/* ---------------------------------------------------- */}
+      {/* RIGHT SIGN IN PANEL: Crisp White Card               */}
+      {/* ---------------------------------------------------- */}
+      <section className="relative flex items-center justify-center p-6 sm:p-10 lg:p-12">
+        <div className="w-full max-w-[460px] rounded-2xl border border-slate-200/80 bg-white p-8 sm:p-10 shadow-xl">
+          {/* Header */}
+          <div className="space-y-1">
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+              Sign in
             </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Select your authentication mode to access transformer management and field maintenance.
+            <p className="text-sm text-slate-500 font-normal">
+              Access the LTL Transformers portal.
             </p>
           </div>
 
+          {/* Error Banner if any */}
           {error && (
-            <Alert variant="destructive" className="border-destructive/40 bg-destructive/10">
-              <AlertDescription className="text-sm font-medium">{error}</AlertDescription>
+            <Alert variant="destructive" className="mt-4 border-destructive/30 bg-destructive/10 text-xs">
+              <AlertDescription className="font-medium">{error}</AlertDescription>
             </Alert>
           )}
 
-          {/* Authentication Mode Tabs */}
-          <Tabs
-            value={authMode}
-            onValueChange={(val) => {
-              setAuthMode(val as "credentials" | "otp");
-              setError(null);
-            }}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="credentials" className="text-xs gap-1.5">
-                <LockKeyhole className="h-3.5 w-3.5" />
-                Staff Password
-              </TabsTrigger>
-              <TabsTrigger value="otp" className="text-xs gap-1.5">
-                <Smartphone className="h-3.5 w-3.5" />
-                Field Mobile OTP
-              </TabsTrigger>
-            </TabsList>
+          {/* Segmented Mode Selector Tabs */}
+          <div className="mt-6 flex rounded-xl bg-slate-100 p-1">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("credentials");
+                setError(null);
+              }}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+                activeTab === "credentials"
+                  ? "bg-white text-blue-700 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <UserIcon className="h-3.5 w-3.5" />
+              Staff Password
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("otp");
+                setError(null);
+              }}
+              className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-semibold transition-all ${
+                activeTab === "otp"
+                  ? "bg-white text-blue-700 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Smartphone className="h-3.5 w-3.5" />
+              Field OTP
+            </button>
+          </div>
 
-            {/* TAB 1: Password Login */}
-            <TabsContent value="credentials" className="space-y-4">
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
-                <div className="space-y-1.5">
-                  <Label htmlFor="username" className="text-xs font-semibold">
-                    Account Username
-                  </Label>
-                  <div className="relative">
-                    <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="username"
-                      autoComplete="username"
-                      placeholder="e.g. ltl.admin or EDL-NCP"
-                      className="pl-9 h-10 transition-colors focus-visible:ring-primary text-xs"
-                      {...form.register("username")}
-                    />
-                  </div>
-                  {form.formState.errors.username && (
-                    <p className="text-xs font-medium text-destructive">
-                      {form.formState.errors.username.message}
-                    </p>
-                  )}
+          {/* TAB 1: USERNAME & PASSWORD LOGIN */}
+          {activeTab === "credentials" && (
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
+              {/* Username Input */}
+              <div className="space-y-1.5">
+                <Label htmlFor="username" className="text-xs font-semibold text-slate-700">
+                  Username
+                </Label>
+                <div className="relative">
+                  <UserIcon className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Input
+                    id="username"
+                    autoComplete="username"
+                    placeholder="Enter your username"
+                    className="h-11 pl-10 text-sm border-slate-200 focus-visible:ring-blue-600 focus-visible:border-blue-600 rounded-lg"
+                    {...form.register("username")}
+                  />
                 </div>
+                {form.formState.errors.username && (
+                  <p className="text-xs text-destructive font-medium">
+                    {form.formState.errors.username.message}
+                  </p>
+                )}
+              </div>
 
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="password" className="text-xs font-semibold">
-                      Password
-                    </Label>
-                    <span className="text-[11px] text-muted-foreground">Demo: {authService.demoPassword}</span>
-                  </div>
-                  <div className="relative">
-                    <LockKeyhole className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      autoComplete="current-password"
-                      placeholder="••••••••••••"
-                      className="pl-9 pr-10 h-10 transition-colors focus-visible:ring-primary text-xs"
-                      {...form.register("password")}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                  {form.formState.errors.password && (
-                    <p className="text-xs font-medium text-destructive">
-                      {form.formState.errors.password.message}
-                    </p>
-                  )}
+              {/* Password Input */}
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-xs font-semibold text-slate-700">
+                  Password
+                </Label>
+                <div className="relative">
+                  <Lock className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Enter your password"
+                    className="h-11 pl-10 pr-10 text-sm border-slate-200 focus-visible:ring-blue-600 focus-visible:border-blue-600 rounded-lg"
+                    {...form.register("password")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-700 p-1"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
                 </div>
+                {form.formState.errors.password && (
+                  <p className="text-xs text-destructive font-medium">
+                    {form.formState.errors.password.message}
+                  </p>
+                )}
+              </div>
 
-                <Button
-                  type="submit"
-                  className="h-10.5 w-full font-semibold shadow-sm transition-all hover:shadow text-xs"
-                  disabled={form.formState.isSubmitting}
+              {/* Sign In Submit Button */}
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                className="mt-2 h-11 w-full rounded-lg bg-[#0d59b8] hover:bg-[#0a4691] text-white font-semibold text-sm shadow-md transition-all flex items-center justify-center gap-2"
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign in
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+
+              {/* Forgot password link */}
+              <div className="text-left">
+                <button
+                  type="button"
+                  onClick={() => toast.info("Password Recovery", { description: "Please contact admin@ltl.lk or use the test credentials below." })}
+                  className="text-xs font-semibold text-[#0d59b8] hover:underline"
                 >
-                  {form.formState.isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Authenticating...
-                    </>
-                  ) : (
-                    <>
-                      Enter Workspace
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </form>
+                  Forgot password?
+                </button>
+              </div>
 
-              {/* Interactive One-Click Prototype Accounts */}
-              <div className="rounded-xl border border-border/80 bg-card/60 p-4 shadow-sm backdrop-blur-sm">
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+              <div className="my-5 border-t border-slate-100" />
+
+              {/* One-Click Quick Test Accounts for Customer Review */}
+              <div className="rounded-xl border border-slate-200/70 bg-slate-50/70 p-3.5">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
                     <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                    Quick Select Prototype Accounts
+                    Customer Test Credentials
                   </span>
-                  <span className="text-[10px] text-muted-foreground">Click to fill</span>
+                  <span className="text-[10px] text-slate-500 font-medium">1-Click Fill</span>
                 </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {DEMO_PRESETS.map((preset) => {
-                    const isSelected = activePreset === preset.username;
+                <div className="grid grid-cols-3 gap-2">
+                  {DEMO_TEST_ACCOUNTS.map((acc) => {
+                    const isSelected = selectedPreset === acc.username;
                     return (
                       <button
-                        key={preset.username}
+                        key={acc.username}
                         type="button"
-                        onClick={() => quickFill(preset.username)}
-                        className={`group relative flex flex-col items-start rounded-lg border p-2 text-left transition-all ${
+                        onClick={() => handleQuickFill(acc.username, acc.password)}
+                        className={`flex flex-col items-start rounded-lg border p-2 text-left transition-all ${
                           isSelected
-                            ? "border-primary bg-primary/10 shadow-xs"
-                            : "border-border/60 bg-background/60 hover:border-primary/40 hover:bg-accent/40"
+                            ? "border-blue-600 bg-blue-50/80 shadow-xs"
+                            : "border-slate-200 bg-white hover:border-blue-400 hover:bg-slate-50"
                         }`}
                       >
                         <div className="flex w-full items-center justify-between">
-                          <span className="font-semibold text-xs text-foreground group-hover:text-primary">
-                            {preset.label}
+                          <span className="text-xs font-bold text-slate-800">
+                            {acc.label}
                           </span>
-                          {isSelected && <CheckCircle2 className="h-3 w-3 text-primary" />}
+                          {isSelected && <CheckCircle2 className="h-3 w-3 text-blue-600" />}
                         </div>
-                        <span className="text-[10px] text-muted-foreground">{preset.role}</span>
+                        <span className="text-[10px] text-slate-500">{acc.role}</span>
                       </button>
                     );
                   })}
                 </div>
               </div>
-            </TabsContent>
 
-            {/* TAB 2: Mobile OTP Login */}
-            <TabsContent value="otp" className="space-y-4">
-              <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-4">
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-semibold">Country / Region</Label>
-                  <Select value={selectedCountry} onValueChange={setSelectedCountry} disabled={otpSent}>
-                    <SelectTrigger className="text-xs h-10">
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {COUNTRIES.map((c) => (
-                        <SelectItem key={c.code} value={c.code} className="text-xs">
-                          {c.name} ({c.isd})
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              {/* Footer Notice */}
+              <p className="pt-2 text-center text-xs text-slate-400">
+                Need access? Contact your LTL administrator.
+              </p>
+            </form>
+          )}
 
-                <div className="space-y-1.5">
-                  <Label className="text-xs font-semibold">Registered Phone Number</Label>
-                  <div className="flex gap-2">
-                    <span className="h-10 px-3 rounded-md border bg-muted flex items-center text-xs font-mono text-muted-foreground">
-                      {country.isd}
-                    </span>
-                    <Input
-                      type="tel"
-                      placeholder={country.placeholder}
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      disabled={otpSent}
-                      className="text-xs h-10 font-mono"
-                      required
-                    />
-                  </div>
-                  <span className="text-[11px] text-muted-foreground">
-                    Matches technician or utility operations roster.
+          {/* TAB 2: FIELD OTP LOGIN */}
+          {activeTab === "otp" && (
+            <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="mt-6 space-y-4">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-slate-700">Country / Region</Label>
+                <Select value={selectedCountry} onValueChange={setSelectedCountry} disabled={otpSent}>
+                  <SelectTrigger className="h-11 text-xs border-slate-200">
+                    <SelectValue placeholder="Select country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {COUNTRIES.map((c) => (
+                      <SelectItem key={c.code} value={c.code} className="text-xs">
+                        {c.name} ({c.isd})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold text-slate-700">Phone Number</Label>
+                <div className="flex gap-2">
+                  <span className="h-11 px-3.5 rounded-lg border border-slate-200 bg-slate-100 flex items-center text-xs font-mono text-slate-700">
+                    {country.isd}
                   </span>
+                  <Input
+                    type="tel"
+                    placeholder={country.placeholder}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    disabled={otpSent}
+                    className="h-11 text-xs font-mono border-slate-200 focus-visible:ring-blue-600"
+                    required
+                  />
                 </div>
+              </div>
 
-                {otpSent && (
-                  <div className="space-y-1.5 p-3 rounded-lg border bg-primary/5">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-xs font-semibold flex items-center gap-1.5 text-primary">
-                        <KeyRound className="h-3.5 w-3.5" />
-                        Enter 6-Digit OTP Code
-                      </Label>
-                      <span className="text-[11px] text-muted-foreground font-mono">Demo: 123456</span>
-                    </div>
-                    <Input
-                      type="text"
-                      maxLength={6}
-                      placeholder="123456"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      className="text-center font-mono tracking-widest text-base h-11"
-                      required
-                    />
+              {otpSent && (
+                <div className="space-y-2 rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                      <KeyRound className="h-3.5 w-3.5 text-blue-700" />
+                      Enter 6-Digit OTP Code
+                    </Label>
+                    <span className="text-[11px] font-mono text-blue-700 font-bold">Demo: 123456</span>
                   </div>
-                )}
-
-                <div className="space-y-2 pt-1">
-                  {!otpSent ? (
-                    <Button type="submit" className="w-full text-xs h-10 gap-1.5" disabled={otpLoading}>
-                      {otpLoading ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Sending One-Time Password...
-                        </>
-                      ) : (
-                        <>
-                          Send Verification OTP
-                          <ArrowRight className="h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  ) : (
-                    <div className="space-y-2">
-                      <Button type="submit" className="w-full text-xs h-10 gap-1.5" disabled={otpLoading}>
-                        {otpLoading ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Verifying...
-                          </>
-                        ) : (
-                          <>
-                            Verify &amp; Enter Workspace
-                            <ArrowRight className="h-4 w-4" />
-                          </>
-                        )}
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-xs"
-                        onClick={() => {
-                          setOtpSent(false);
-                          setOtp("");
-                        }}
-                      >
-                        Change Phone Number
-                      </Button>
-                    </div>
-                  )}
+                  <Input
+                    type="text"
+                    maxLength={6}
+                    placeholder="123456"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="h-11 text-center font-mono tracking-widest text-base bg-white"
+                    required
+                  />
                 </div>
-              </form>
-            </TabsContent>
-          </Tabs>
+              )}
 
-          <p className="text-center text-xs text-muted-foreground">
-            Protected under Lanka Transformers Limited Security Protocol. Unauthorized attempts are monitored.
-          </p>
+              <Button
+                type="submit"
+                disabled={otpLoading}
+                className="mt-2 h-11 w-full rounded-lg bg-[#0d59b8] hover:bg-[#0a4691] text-white font-semibold text-sm shadow-md"
+              >
+                {otpLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Verifying...
+                  </>
+                ) : otpSent ? (
+                  <>
+                    Verify &amp; Sign in
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </>
+                ) : (
+                  <>
+                    Send Verification OTP
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </>
+                )}
+              </Button>
+
+              {otpSent && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                  }}
+                  className="w-full text-center text-xs text-slate-500 hover:text-slate-800"
+                >
+                  Change phone number
+                </button>
+              )}
+
+              <p className="pt-2 text-center text-xs text-slate-400">
+                Need access? Contact your LTL administrator.
+              </p>
+            </form>
+          )}
         </div>
       </section>
     </div>

@@ -71,7 +71,7 @@ export const Route = createFileRoute("/_portal/service-requests")({
   component: ServiceRequestsPage,
 });
 
-export function ServiceRequestsPage() {
+function ServiceRequestsPage() {
   const navigate = useNavigate();
   const fileInputId = useId();
   const [activeTab, setActiveTab] = useState<string>("tickets");

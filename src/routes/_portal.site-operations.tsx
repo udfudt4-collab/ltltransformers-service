@@ -41,7 +41,7 @@ export const Route = createFileRoute("/_portal/site-operations")({
   component: SiteOperationsPage,
 });
 
-export function SiteOperationsPage() {
+function SiteOperationsPage() {
   const navigate = useNavigate();
   const [siteLocation, setSiteLocation] = useState<SiteOperationLocation>(() =>
     service360Service.getSiteLocation()
