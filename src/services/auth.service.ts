@@ -28,6 +28,9 @@ export const authService = {
       if (!user && (cleanUser === "admin" || cleanUser.includes("test") || cleanUser.includes("ltl"))) {
         user = users[0]; // fallback to ltl.admin
       }
+      if (!user && (cleanUser.includes("customer") || cleanUser.includes("client") || cleanUser === "user")) {
+        user = users[1]; // fallback to customer.demo
+      }
       
       const validPasswords = ["Password@123", "demo123", "admin123", "password", "123456"];
       const isValidPass = validPasswords.includes(password.trim()) || password.trim().length >= 4;
