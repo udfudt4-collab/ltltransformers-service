@@ -17,6 +17,13 @@ import {
 } from "recharts";
 import {
   Activity,
+  Clock,
+  HardHat,
+  PhoneCall,
+  ArrowUpRight,
+  MapPin,
+  ShieldCheck,
+  Wrench,
   AlertTriangle,
   ArrowRight,
   Calendar,
@@ -40,6 +47,8 @@ import { CardsSkeleton } from "@/components/common/skeletons";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/auth-context";
 import { dashboardService } from "@/services/dashboard.service";
+import { service360Service } from "@/services/service360.service";
+import { Badge } from "@/components/ui/badge";
 import { CURRENT_PERIOD, MONTHS, PROVINCES } from "@/mock/provinces";
 
 export const Route = createFileRoute("/_portal/dashboard")({
@@ -149,7 +158,7 @@ function EdlDashboard({ province }: { province: string }) {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button size="sm" asChild>
             <Link to="/stock">
               <PackageSearch className="mr-1.5 h-4 w-4" />
@@ -160,6 +169,12 @@ function EdlDashboard({ province }: { province: string }) {
             <Link to="/failures">
               <Zap className="mr-1.5 h-4 w-4" />
               Report Trip
+            </Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild className="border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10">
+            <Link to="/service-requests">
+              <Wrench className="mr-1.5 h-4 w-4" />
+              Maintenance Ticket
             </Link>
           </Button>
         </div>
@@ -247,6 +262,36 @@ function EdlDashboard({ province }: { province: string }) {
             </ChartCard>
           </div>
 
+          <section className="rounded-xl border border-emerald-500/20 bg-gradient-to-r from-emerald-950/15 via-background to-background p-4.5 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px] font-semibold">
+                    Service360 Fleet Support
+                  </Badge>
+                  <span className="text-xs font-semibold text-foreground">Substation Maintenance & Warranty Services</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Direct line to LTL field engineering for transformer breakdown assistance, warranty registration, and laboratory oil test certificates.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button size="sm" variant="default" asChild className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs h-8">
+                  <Link to="/register-warranty">
+                    <ShieldCheck className="mr-1 h-3.5 w-3.5" />
+                    Register Warranty
+                  </Link>
+                </Button>
+                <Button size="sm" variant="outline" asChild className="text-xs h-8">
+                  <Link to="/services-hub">
+                    <Sparkles className="mr-1 h-3.5 w-3.5" />
+                    Services Catalog
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+
           <section className="rounded-xl border border-border/80 bg-card p-4.5 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-foreground">Operational Notifications</h2>
@@ -278,6 +323,12 @@ function LtlDashboard() {
     queryKey: ["dashboard", "ltl"],
     queryFn: () => dashboardService.ltl(),
   });
+
+  const tickets = service360Service.getTickets();
+  const equipment = service360Service.getEquipment();
+  const openTickets = tickets.filter((t) => t.status !== "RESOLVED");
+  const criticalTickets = openTickets.filter((t) => t.priority === "CRITICAL");
+  const activeWarranties = equipment.filter((e) => e.coverageStatus === "active");
 
   const period = `${MONTHS[CURRENT_PERIOD.month - 1] ?? ""} ${CURRENT_PERIOD.year}`;
 
@@ -384,7 +435,164 @@ function LtlDashboard() {
             />
           </div>
 
-          {/* Core Telemetry & Visualizations */}
+          {/* Service360 & After-Sales Maintenance Command Center */}
+      <section className="overflow-hidden rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/20 via-background to-background p-6 shadow-sm backdrop-blur-md">
+        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center mb-6">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <Badge className="bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-xs font-semibold px-2.5 py-0.5">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse mr-1.5" />
+                Service360 & After-Sales Fleet Support
+              </Badge>
+              <span className="text-xs text-muted-foreground">Post-Sales Life Cycle & Maintenance Hub</span>
+            </div>
+            <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              Transformer Maintenance, Warranty & Field Operations
+            </h2>
+            <p className="text-xs text-muted-foreground sm:text-sm max-w-3xl">
+              Unified command center bridging factory supply with after-sales lifecycle: active breakdown tickets, customer warranty verifications, mobile oil testing, and field technician dispatch.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm" variant="default" asChild className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs">
+              <Link to="/services-hub">
+                <Sparkles className="mr-1.5 h-4 w-4" />
+                Engineering Services Hub
+              </Link>
+            </Button>
+            <Button size="sm" variant="outline" asChild className="border-emerald-500/30 hover:bg-emerald-500/10">
+              <Link to="/service-requests">
+                <Wrench className="mr-1.5 h-4 w-4" />
+                Log Ticket
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* 4 Interactive Service360 Action Cards */}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Card 1: Service Requests */}
+          <Link
+            to="/service-requests"
+            className="group relative flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-emerald-500/50 hover:bg-card hover:shadow-md"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-amber-500/10 text-amber-500 group-hover:scale-105 transition-transform">
+                  <Wrench className="h-5 w-5" />
+                </div>
+                <Badge variant={criticalTickets.length > 0 ? "destructive" : "secondary"} className="text-[10px]">
+                  {criticalTickets.length > 0 ? `${criticalTickets.length} Critical` : "SLA On Track"}
+                </Badge>
+              </div>
+              <h3 className="font-semibold text-sm text-foreground group-hover:text-emerald-500 transition-colors">
+                Active Service Tickets
+              </h3>
+              <p className="text-2xl font-bold tracking-tight text-foreground mt-1">
+                {openTickets.length}{" "}
+                <span className="text-xs font-normal text-muted-foreground">in priority queue</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Breakdown repairs, periodic overhaul & urgent tripping investigations.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform">
+              Manage Tickets <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </div>
+          </Link>
+
+          {/* Card 2: Warranty & Asset Registration */}
+          <Link
+            to="/register-warranty"
+            className="group relative flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-emerald-500/50 hover:bg-card hover:shadow-md"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-emerald-500/10 text-emerald-500 group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <Badge variant="outline" className="text-[10px] text-emerald-500 border-emerald-500/30">
+                  QR Verified
+                </Badge>
+              </div>
+              <h3 className="font-semibold text-sm text-foreground group-hover:text-emerald-500 transition-colors">
+                Warranty & Assets
+              </h3>
+              <p className="text-2xl font-bold tracking-tight text-foreground mt-1">
+                {activeWarranties.length}{" "}
+                <span className="text-xs font-normal text-muted-foreground">active units</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Serial registry, QR verification certificates & warranty claims.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform">
+              Register / Verify <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </div>
+          </Link>
+
+          {/* Card 3: Site & Field Operations */}
+          <Link
+            to="/site-operations"
+            className="group relative flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-emerald-500/50 hover:bg-card hover:shadow-md"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-sky-500/10 text-sky-500 group-hover:scale-105 transition-transform">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <Badge variant="secondary" className="text-[10px]">
+                  GPS Live
+                </Badge>
+              </div>
+              <h3 className="font-semibold text-sm text-foreground group-hover:text-emerald-500 transition-colors">
+                Site & Field Operations
+              </h3>
+              <p className="text-2xl font-bold tracking-tight text-foreground mt-1">
+                Substation Ops
+              </p>
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Technician dispatch, safety checklists & real-time oil sampling records.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform">
+              Track Field Operations <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </div>
+          </Link>
+
+          {/* Card 4: Services Hub & 24/7 Command */}
+          <Link
+            to="/services-hub"
+            className="group relative flex flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 transition-all hover:border-emerald-500/50 hover:bg-card hover:shadow-md"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="grid h-10 w-10 place-items-center rounded-lg bg-purple-500/10 text-purple-500 group-hover:scale-105 transition-transform">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <Badge variant="outline" className="text-[10px] text-purple-500 border-purple-500/30">
+                  ISO-17025
+                </Badge>
+              </div>
+              <h3 className="font-semibold text-sm text-foreground group-hover:text-emerald-500 transition-colors">
+                Engineering Services
+              </h3>
+              <p className="text-2xl font-bold tracking-tight text-foreground mt-1">
+                Full-Scope LTL
+              </p>
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Laboratory oil diagnostics, mobile filtration plants & factory rewinding.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform">
+              Explore Catalog <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* Core Telemetry & Visualizations */}
           <div className="grid gap-5 lg:grid-cols-2">
             {/* Province Stock vs Issued Bar Chart */}
             <ChartCard
