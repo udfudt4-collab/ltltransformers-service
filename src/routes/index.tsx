@@ -46,9 +46,9 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const DEMO_TEST_ACCOUNTS = [
-  { label: "LTL Admin", username: "ltl.admin", role: "Super Admin", password: "Password@123" },
-  { label: "EDL Province", username: "EDL-NCP", role: "Utility Office", password: "Password@123" },
-  { label: "Service Client", username: "customer.demo", role: "Mobi Warranty", password: "Password@123" },
+  { label: "LTL Admin", username: "ltl.admin", role: "Sales + After-Sales", password: "Password@123" },
+  { label: "EDL Province", username: "EDL-NCP", role: "Sales (Utility)", password: "Password@123" },
+  { label: "Service Client", username: "customer.demo", role: "After-Sales (Office 360)", password: "Password@123" },
 ];
 
 function LoginPage() {
@@ -353,7 +353,7 @@ function LoginPage() {
                   <div className="text-left">
                     <div className="text-xs font-bold text-slate-800">Quick access</div>
                     <div className="text-[11px] text-slate-500">
-                      LTL Admin &nbsp;·&nbsp; EDL Province &nbsp;·&nbsp; Service Client
+                      LTL Admin (Both) &nbsp;·&nbsp; EDL (Sales) &nbsp;·&nbsp; Client (After-Sales)
                     </div>
                   </div>
                 </div>
